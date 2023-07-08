@@ -1,0 +1,32 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    string username = Context.Session.GetString("username");
+    string displayName = Context.Session.GetString("displayName");
+}
+@using Online_English_Quiz_Project.Models
+<div class="header">
+    @if (username != null)
+    {
+        <div>
+            <p>@displayName</p>
+            <a href="/logout">logout</a>
+        </div>
+    }
+    else
+    {
+        <div>
+            <a href="/login">login</a>
+        </div>
+    }
+
+</div>
+<h1>ONLINE ENGLISH EXAM</h1>
+<div class="Quizzes">
+    @foreach(Quiz q in ViewBag.Quizzes)
+    {
+        <div class="quiz" onclick="window.location.href='/quiz/@q.QuizId'">
+            <p>@q.QuizTitle</p>
+        </div>
+    }
+</div>
