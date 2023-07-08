@@ -23,7 +23,7 @@ CREATE TABLE UserRole(
 )
 
 CREATE TABLE Quiz(
-	quizId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	quizId INT NOT NULL PRIMARY KEY,
 	quizTitle VARCHAR(255),
 	quizDescription VARCHAR(max),
 	created_by VARCHAR(255) REFERENCES [User](username)

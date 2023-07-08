@@ -26,11 +26,11 @@ namespace Online_English_Quiz_Project.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=LAPTOP-EKELI1UA;database=PRN211_Online_English_Quiz;uid=duckm;pwd=Password123#@!;TrustServerCertificate=True;");
-            }
+            var builder = new ConfigurationBuilder()
+                              .SetBasePath(Directory.GetCurrentDirectory())
+                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -74,7 +74,9 @@ namespace Online_English_Quiz_Project.Models
             {
                 entity.ToTable("Quiz");
 
-                entity.Property(e => e.QuizId).HasColumnName("quizId");
+                entity.Property(e => e.QuizId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("quizId");
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
@@ -132,7 +134,7 @@ namespace Online_English_Quiz_Project.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Username)
-                    .HasName("PK__User__F3DBC5738FE893A5");
+                    .HasName("PK__User__F3DBC57397786E4A");
 
                 entity.ToTable("User");
 
@@ -167,7 +169,7 @@ namespace Online_English_Quiz_Project.Models
                         r => r.HasOne<User>().WithMany().HasForeignKey("Username").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserRole__userna__286302EC"),
                         j =>
                         {
-                            j.HasKey("Username", "RoleId").HasName("PK__UserRole__4F02411156E73E96");
+                            j.HasKey("Username", "RoleId").HasName("PK__UserRole__4F024111DE1BEB25");
 
                             j.ToTable("UserRole");
 
