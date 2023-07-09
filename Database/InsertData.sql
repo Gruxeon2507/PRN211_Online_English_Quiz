@@ -30,18 +30,18 @@ INSERT INTO [UserRole] ([username], [roleId]) VALUES ('hoavt', '1');
 INSERT INTO [UserRole] ([username], [roleId]) VALUES ('admin', '2');
 
 --Quiz
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Quantifiers 2 Test A1 - A2 Grammar Exercises', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('A2 B1 Level Grammar Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Elementary English Grammar Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Pre-Intermediate English Grammar Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Intermediate English Grammar Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Upper Intermediate English Grammar Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Advanced English Grammar Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Adjectives and Adverbs Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Adverbial Clauses Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Articles Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Causatives Tests', '', 'admin');
-INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by]) VALUES ('Conditionals (If Clauses) Tests', '', 'admin');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Quantifiers 2 Test A1 - A2 Grammar Exercises', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('A2 B1 Level Grammar Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Elementary English Grammar Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Pre-Intermediate English Grammar Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Intermediate English Grammar Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Upper Intermediate English Grammar Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Advanced English Grammar Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Adjectives and Adverbs Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Adverbial Clauses Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Articles Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Causatives Tests', '', 'admin', '30');
+INSERT INTO [Quiz] ([quizTitle], [quizDescription], [created_by], [duration]) VALUES ('Conditionals (If Clauses) Tests', '', 'admin', '30');
 
 --Question
 INSERT INTO [Question] ([questionText]) VALUES ('Aaron and Milan are friends and _______ of them go to the same school. They are classmates, too.');

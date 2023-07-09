@@ -12,7 +12,7 @@ CREATE TABLE [User] (
 )
 
 CREATE TABLE [Role](
-	roleId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	roleId INT NOT NULL PRIMARY KEY,
 	roleName VARCHAR(50)
 )
 
@@ -48,7 +48,7 @@ CREATE TABLE QuizQuestion(
 )
 
 CREATE TABLE Answer(
-	answerId INT PRIMARY KEY,
+	answerId INT PRIMARY KEY NOT NULL IDENTITY(1,1) ,
 	questionId INT REFERENCES Question(questionId),
 	answerText VARCHAR(255),
 	isCorrectAnswer BIT
