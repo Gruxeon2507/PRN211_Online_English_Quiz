@@ -18,7 +18,7 @@
         </p>
     </div>
     <div>
-        <form>
+        <form asp-action="Submit" asp-controller="Quiz" method="post">
             @foreach (var question in questions)
             {
                 <p>
@@ -35,6 +35,7 @@
                 }
                 <br />
             }
+            <input type="submit" value="submit"/>
         </form>
 
     </div>

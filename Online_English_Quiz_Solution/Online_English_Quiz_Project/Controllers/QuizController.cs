@@ -23,7 +23,40 @@ namespace Online_English_Quiz_Project.Controllers
                     return View();
                 }
             }
-            return RedirectToAction("Login", "Authentication");
+            return View();
+            //return RedirectToAction("Login", "Authentication");
+        }
+        [HttpPost]
+        public IActionResult Submit(IFormCollection form)
+        {
+            using(PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
+            {
+                int correctAnswer = 0;
+                int totalQuestion = 0;
+                int temp = 0;
+                foreach (var key in form.Keys)
+                {
+                    if (key.StartsWith("answer"))
+                    {
+                        int answer = Int32.Parse(form[key]);
+                        var correct = context.Answers.Where(a => a.AnswerId == answer && a.IsCorrectAnswer == true);
+                        if (correct != null)
+                        {
+                            correctAnswer++;
+                        }
+                        totalQuestion++;
+                    }
+                }
+                ViewBag.TotalScore = correctAnswer / totalQuestion;
+                //Console.WriteLine(correctAnswer / totalQuestion);
+                Console.WriteLine("chay vao day");
+            }
+            return RedirectToAction("Submit","Quiz");
+        }
+        [HttpGet]
+        public IActionResult Submit()
+        {
+            return View();
         }
     }
 }
