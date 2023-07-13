@@ -31,7 +31,7 @@ namespace Online_English_Quiz_Project
             );
             app.MapControllerRoute(
                 name: "submitQuiz",
-                pattern: "/submit",
+                pattern: "/submit/{quizId}",
                 defaults: new { controller = "Quiz", action = "Submit",method="post" }
             );
             app.MapGet("/", context =>

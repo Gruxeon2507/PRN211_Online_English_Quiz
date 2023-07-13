@@ -18,7 +18,8 @@
         </p>
     </div>
     <div>
-        <form asp-action="Submit" asp-controller="Quiz" method="post">
+        <form action="../submit/@ViewBag.QuizId"  method="post">
+            <input type="text" value="@Context.Session.GetString("username")" name = "username" />
             @foreach (var question in questions)
             {
                 <p>

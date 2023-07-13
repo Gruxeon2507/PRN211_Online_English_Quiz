@@ -8,7 +8,7 @@ namespace Online_English_Quiz_Project.Models
         public int UserQuizId { get; set; }
         public string? Username { get; set; }
         public int? QuizId { get; set; }
-        public int? Score { get; set; }
+        public double? Score { get; set; }
         public DateTime? DateTaken { get; set; }
 
         public virtual Quiz? Quiz { get; set; }

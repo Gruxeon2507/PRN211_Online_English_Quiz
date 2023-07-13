@@ -5,6 +5,7 @@ namespace Online_English_Quiz_Project.Controllers
 {
     public class QuizController : Controller
     {
+        static int id;
         public IActionResult Quiz(int quizId)
         {
             using (PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
@@ -23,12 +24,13 @@ namespace Online_English_Quiz_Project.Controllers
                     return View();
                 }
             }
+            int id = quizId;
             return View();
             //return RedirectToAction("Login", "Authentication");
         }
         static string score;
         [HttpPost]
-        public IActionResult Submit(List<string> answers)
+        public IActionResult Submit(List<string> answers, int quizId,string username)
         {
 
             int correctAnswer = 0;
@@ -56,7 +58,11 @@ namespace Online_English_Quiz_Project.Controllers
                 score = finalScore+"";
                 UserQuiz quiz = new UserQuiz();
                 quiz.DateTaken = DateTime.Now;
-                quiz.Username = HttpContext.Session.GetString("username");
+                quiz.Username =username;
+                quiz.Score = finalScore;
+                quiz.QuizId = quizId;
+                context.UserQuizzes.Add(quiz);
+                context.SaveChanges();
                 Console.WriteLine(correctAnswer / totalQuestion);
                 Console.WriteLine("chay vao day");
             }
