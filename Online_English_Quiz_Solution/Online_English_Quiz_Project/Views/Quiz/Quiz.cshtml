@@ -5,7 +5,7 @@
 @{
     var questions = ViewBag.Questions as List<Question>;
     var answers = ViewBag.Answers as List<Answer>;
-    int index = 1;
+    int index = 0;
 }
 @using Online_English_Quiz_Project.Models;
 <div>
@@ -24,15 +24,17 @@
                 <p>
                     Question @index: @question.QuestionText
                 </p>
-                index++;
+                
                 @foreach(var answer in answers)
                 {
                     if (answer.QuestionId == question.QuestionId)
                     {
-                        <input type="radio" id="@index" name="answer_@index" value="@answer.AnswerId">
+                        <input type="radio" id="answer+@index" name="answers[@index]" value="@answer.AnswerId" checked>
                         <label for="@index">@answer.AnswerText</label><br />
+                        <p>@answer.AnswerId</p>
                     }
                 }
+                index++;
                 <br />
             }
             <input type="submit" value="submit"/>

@@ -34,7 +34,7 @@ CREATE TABLE UserQuiz(
 	UserQuizId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	username VARCHAR(255) REFERENCES [User](username),
 	quizId INT REFERENCES [Quiz](quizId),
-	score INT,
+	score DECIMAL(4,2),
 	dateTaken DATE
 )
 

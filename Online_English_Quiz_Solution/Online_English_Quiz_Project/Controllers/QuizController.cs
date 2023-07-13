@@ -26,36 +26,47 @@ namespace Online_English_Quiz_Project.Controllers
             return View();
             //return RedirectToAction("Login", "Authentication");
         }
+        static string score;
         [HttpPost]
-        public IActionResult Submit(IFormCollection form)
+        public IActionResult Submit(List<string> answers)
         {
-            using(PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
+
+            int correctAnswer = 0;
+            int totalQuestion = 10;
+            int temp = 0; 
+
+            using (PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
             {
-                int correctAnswer = 0;
-                int totalQuestion = 0;
-                int temp = 0;
-                foreach (var key in form.Keys)
+                for(int i = 0; i <= 9; i++)
                 {
-                    if (key.StartsWith("answer"))
+                    int index = Convert.ToInt32(answers[i]);
+                    Console.WriteLine(index);
+                    var correct = context.Answers.Where(a =>a.AnswerId == index).ToList();
+                    foreach(var answer in correct)
                     {
-                        int answer = Int32.Parse(form[key]);
-                        var correct = context.Answers.Where(a => a.AnswerId == answer && a.IsCorrectAnswer == true);
-                        if (correct != null)
+                        Console.WriteLine(answer.AnswerId);
+                        if (answer.IsCorrectAnswer)
                         {
                             correctAnswer++;
                         }
-                        totalQuestion++;
                     }
                 }
-                ViewBag.TotalScore = correctAnswer / totalQuestion;
-                //Console.WriteLine(correctAnswer / totalQuestion);
+                Console.WriteLine(correctAnswer);
+                double finalScore = (double)correctAnswer / totalQuestion * 10;
+                score = finalScore+"";
+                UserQuiz quiz = new UserQuiz();
+                quiz.DateTaken = DateTime.Now;
+                quiz.Username = HttpContext.Session.GetString("username");
+                Console.WriteLine(correctAnswer / totalQuestion);
                 Console.WriteLine("chay vao day");
             }
+            
             return RedirectToAction("Submit","Quiz");
         }
         [HttpGet]
         public IActionResult Submit()
         {
+            ViewBag.TotalScore = score;
             return View();
         }
     }
