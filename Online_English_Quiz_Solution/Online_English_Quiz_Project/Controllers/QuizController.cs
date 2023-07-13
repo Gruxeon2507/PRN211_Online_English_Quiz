@@ -8,8 +8,18 @@ namespace Online_English_Quiz_Project.Controllers
         static int id;
         public IActionResult Quiz(int quizId)
         {
+            if (HttpContext.Session.GetString("username") == null)
+            {
+                return RedirectToAction("Login", "Authentication");
+            }
+            
             using (PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
             {
+                var taken = context.UserQuizzes.Where(uq => uq.QuizId == (int)quizId && uq.Username == HttpContext.Session.GetString("username")).ToList();
+                foreach(var t in taken)
+                {
+                    return RedirectToAction("Result", "Display", new { quizId = quizId });
+                }
                 var quiz = context.Quizzes.FirstOrDefault(q => q.QuizId == quizId);
                 if(quiz != null)
                 {
@@ -26,7 +36,6 @@ namespace Online_English_Quiz_Project.Controllers
             }
             int id = quizId;
             return View();
-            //return RedirectToAction("Login", "Authentication");
         }
         static string score;
         [HttpPost]
@@ -34,14 +43,14 @@ namespace Online_English_Quiz_Project.Controllers
         {
 
             int correctAnswer = 0;
-            int totalQuestion = 10;
+            int totalQuestion = answers.Count;
             int temp = 0; 
 
             using (PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
             {
-                for(int i = 0; i <= 9; i++)
+                foreach(var a in answers)
                 {
-                    int index = Convert.ToInt32(answers[i]);
+                    int index = Convert.ToInt32(a);
                     Console.WriteLine(index);
                     var correct = context.Answers.Where(a =>a.AnswerId == index).ToList();
                     foreach(var answer in correct)
@@ -54,7 +63,7 @@ namespace Online_English_Quiz_Project.Controllers
                     }
                 }
                 Console.WriteLine(correctAnswer);
-                double finalScore = (double)correctAnswer / totalQuestion * 10;
+                float finalScore = (float)correctAnswer / totalQuestion * 10;
                 score = finalScore+"";
                 UserQuiz quiz = new UserQuiz();
                 quiz.DateTaken = DateTime.Now;
@@ -66,13 +75,16 @@ namespace Online_English_Quiz_Project.Controllers
                 Console.WriteLine(correctAnswer / totalQuestion);
                 Console.WriteLine("chay vao day");
             }
-            
-            return RedirectToAction("Submit","Quiz");
+
+            return RedirectToAction("Result", "Display", new { quizId = quizId });
         }
         [HttpGet]
         public IActionResult Submit()
         {
-            ViewBag.TotalScore = score;
+            using (PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
+            {
+
+            }
             return View();
         }
     }

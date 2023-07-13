@@ -8,7 +8,16 @@
     int index = 0;
 }
 @using Online_English_Quiz_Project.Models;
+<style>
+    .inExam{
+        display:none
+    }
+</style>
 <div>
+<div class="preExam">
+        <button id="start" onclick="startQuiz()">START QUIZ</button>
+</div>
+<div class="inExam">
     <div>
         <p>
             @ViewBag.Quizid
@@ -18,7 +27,12 @@
         </p>
     </div>
     <div>
-        <form action="../submit/@ViewBag.QuizId"  method="post">
+        <section class="takeQuizz-util">
+            <span id="timer">00:30</span>
+        </section>
+    </div>
+    <div>
+        <form id="quiz-form" action="../submit/@ViewBag.QuizId"  method="post">
             <input type="text" value="@Context.Session.GetString("username")" name = "username" />
             @foreach (var question in questions)
             {
@@ -43,3 +57,41 @@
 
     </div>
 </div>
+</div>
+<script>
+    const button = document.getElementById("start")
+    const timerElement = document.getElementById("timer");
+    button.addEventListener("click", () => {
+        startCountdown();
+        
+        document.getElementsByClassName("preExam")[0].style.display = "none";
+        document.getElementsByClassName("inExam")[0].style.display = "block";
+    });
+    function startQuiz(){
+        startCountdown();
+        document.getElementsByClassName("preExam").style.display = "none";
+        document.getElementsByClassName("inExam").style.display = "block";
+    }
+    function startCountdown() {
+        let timeLeft = 1 * 30;
+
+        const countdownInterval = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            timerElement.textContent = `${padZero(minutes)}:${padZero(seconds)}`;
+
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                clearInterval(countdownInterval);
+                document.getElementById("quiz-form").submit();
+
+            }
+        }, 1000);
+    }
+
+    function padZero(number) {
+        return number.toString().padStart(2, "0");
+    }
+</script>

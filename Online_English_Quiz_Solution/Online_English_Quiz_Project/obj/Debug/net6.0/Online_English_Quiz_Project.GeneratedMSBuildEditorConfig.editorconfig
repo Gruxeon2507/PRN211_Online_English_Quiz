@@ -24,10 +24,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGxheVxIb21lLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/PRN211_Online_English_Quiz/Online_English_Quiz_Solution/Online_English_Quiz_Project/Views/Display/Result.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzcGxheVxSZXN1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/PRN211_Online_English_Quiz/Online_English_Quiz_Solution/Online_English_Quiz_Project/Views/Quiz/Quiz.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUXVpelxRdWl6LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/PRN211_Online_English_Quiz/Online_English_Quiz_Solution/Online_English_Quiz_Project/Views/Quiz/Submit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUXVpelxTdWJtaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/PRN211_Online_English_Quiz/Online_English_Quiz_Solution/Online_English_Quiz_Project/Views/Statistic/Statistic.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlzdGljXFN0YXRpc3RpYy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

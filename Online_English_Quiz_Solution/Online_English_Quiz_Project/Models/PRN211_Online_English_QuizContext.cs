@@ -26,11 +26,11 @@ namespace Online_English_Quiz_Project.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
-                              .SetBasePath(Directory.GetCurrentDirectory())
-                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("server=LAPTOP-EKELI1UA;database=PRN211_Online_English_Quiz;uid=duckm;pwd=Password123#@!;TrustServerCertificate=True;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,9 +39,7 @@ namespace Online_English_Quiz_Project.Models
             {
                 entity.ToTable("Answer");
 
-                entity.Property(e => e.AnswerId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("answerId");
+                entity.Property(e => e.AnswerId).HasColumnName("answerId");
 
                 entity.Property(e => e.AnswerText)
                     .HasMaxLength(255)
@@ -74,14 +72,14 @@ namespace Online_English_Quiz_Project.Models
             {
                 entity.ToTable("Quiz");
 
-                entity.Property(e => e.QuizId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("quizId");
+                entity.Property(e => e.QuizId).HasColumnName("quizId");
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("created_by");
+
+                entity.Property(e => e.Duration).HasColumnName("duration");
 
                 entity.Property(e => e.QuizDescription)
                     .IsUnicode(false)
@@ -123,7 +121,9 @@ namespace Online_English_Quiz_Project.Models
             {
                 entity.ToTable("Role");
 
-                entity.Property(e => e.RoleId).HasColumnName("roleId");
+                entity.Property(e => e.RoleId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("roleId");
 
                 entity.Property(e => e.RoleName)
                     .HasMaxLength(50)
@@ -134,7 +134,7 @@ namespace Online_English_Quiz_Project.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Username)
-                    .HasName("PK__User__F3DBC57397786E4A");
+                    .HasName("PK__User__F3DBC5734EF91284");
 
                 entity.ToTable("User");
 
@@ -169,7 +169,7 @@ namespace Online_English_Quiz_Project.Models
                         r => r.HasOne<User>().WithMany().HasForeignKey("Username").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserRole__userna__286302EC"),
                         j =>
                         {
-                            j.HasKey("Username", "RoleId").HasName("PK__UserRole__4F024111DE1BEB25");
+                            j.HasKey("Username", "RoleId").HasName("PK__UserRole__4F0241116764A679");
 
                             j.ToTable("UserRole");
 

@@ -34,6 +34,11 @@ namespace Online_English_Quiz_Project
                 pattern: "/submit/{quizId}",
                 defaults: new { controller = "Quiz", action = "Submit",method="post" }
             );
+            app.MapControllerRoute(
+                name: "result",
+                pattern: "/result",
+                defaults: new { controller = "Display", action = "Result" }
+            );
             app.MapGet("/", context =>
             {
                 context.Response.Redirect("/home");
