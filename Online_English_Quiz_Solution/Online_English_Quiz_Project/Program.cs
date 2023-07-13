@@ -39,6 +39,16 @@ namespace Online_English_Quiz_Project
                 pattern: "/result",
                 defaults: new { controller = "Display", action = "Result" }
             );
+            app.MapControllerRoute(
+                name: "Statistic",
+                pattern: "/statistic",
+                defaults: new { controller = "Statistic", action = "Statistic" }
+            );
+            app.MapControllerRoute(
+                name: "Statistic",
+                pattern: "/statistic/{quizId}",
+                defaults: new { controller = "Statistic", action = "Statistic" }
+            );
             app.MapGet("/", context =>
             {
                 context.Response.Redirect("/home");

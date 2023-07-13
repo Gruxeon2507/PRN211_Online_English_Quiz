@@ -1,6 +1,62 @@
-﻿@*
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
 @using Online_English_Quiz_Project.Models
+<div>
+    <table>
+        <tr>
+            <td>A</td>
+            <td>@ViewBag.Score[4]</td>
+        </tr>
+        <tr>
+            <td>B</td>
+            <td>@ViewBag.Score[3]</td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td>@ViewBag.Score[2]</td>
+        </tr>
+        <tr>
+            <td>D</td>
+            <td>@ViewBag.Score[1]</td>
+        </tr>
+        <tr>
+            <td>F</td>
+            <td>@ViewBag.Score[0]</td>
+        </tr>
+    </table>
+    <div>
+        @foreach (Quiz q in ViewBag.quiz)
+        {
+            <div class="quiz" onclick="window.location.href='/statistic/@q.QuizId'">
+                <p>@q.QuizTitle</p>
+            </div>
+        }
+    </div>
+    <form asp-action="Statistic" asp-controller="Statistic" method="get">
+        <input name="quizId" value="0" hidden/>
+        <input type="submit" value="RESET"/>
+    </form>
+    <table>
+        <tr>
+            <td>user</td>
+            <td>quiz</td>
+            <td>score</td>
+            <td>date</td>
+        </tr>
+        @foreach (UserQuiz q in ViewBag.data)
+        {
+            <tr>
+                <td>@q.Username</td>
+                <td>@q.Quiz.QuizTitle</td>
+                <td>@q.Score</td>
+                <td>@q.DateTaken</td>
+            </tr>
+        }
+    </table>
+
+
+</div>
