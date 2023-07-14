@@ -6,74 +6,274 @@
     var questions = ViewBag.Questions as List<Question>;
     var answers = ViewBag.Answers as List<Answer>;
     int index = 0;
+    int i = 0;
 }
 @using Online_English_Quiz_Project.Models;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lunasima:wght@400;700&family=Roboto+Condensed:wght@300;400;700&family=Roboto+Mono:ital,wght@0,300;0,400;0,500;1,200;1,400&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-    .inExam{
-        display:none
+    * {
+        /*border: 1px solid red;*/
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .inExam {
+        display: none
+    }
+
+    .container {
+        margin:50px;
+    }
+
+    .quizContainer {
+        height: 38.8vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    p{
+        margin-top:7px;
+        margin-bottom: 7px;
+        padding: 0;
+    }
+    h3 {
+        margin: 0;
+        padding: 0;
+        
+    }
+    .questionNumber h3{
+        white-space: nowrap;
+    }
+    .quizContainer:last-child {
+    }
+
+    .examBody {
+        display: flex;
+        width: 100%;
+        flex-direction:row;
+
+    }
+
+    .left {
+        width: 80%;
+        border-top: 2px solid #fd647a;
+        border-right: 2px solid rgba(0,0,0,0.2);
+        padding-top: 7px;
+        padding:10px 20px 10px 20px;
+        border-radius: 5px;
+    }
+
+    .right {
+        width: 20%;
+        margin-left: 20px;
+        border-top: 2px solid #5bc0de;
+        padding: 10px 20px 10px 20px;
+        border-radius: 5px;
+
+    }
+
+    .quizChild {
+        height: 100% !important;
+        width:100%;
+        display: flex;
+        
+        margin: 0;
+        padding: 0;
+
+    }
+
+    .questionNumber {
+        width: min-content;
+        margin-right: 30px;
+    }
+
+    .nav-item {
+        border: 1px solid;
+        padding: 5px;
+        border-radius: 5px;
+        width: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    a {
+        text-decoration: none;
+        color:black;
+    }
+
+    .examNavigation {
+        display: grid;
+        grid-template-columns: repeat(5,1fr );
+        gap: 10px;
+        width: min-content;
+        margin-left:10px
+    }
+    .answer{
+        margin: 10px;
+        
+    }
+    *{
+        font-size: 1.3rem;
+        
+    }
+    .examTitle{
+    }
+    #timer{
+        font-weight:bold;
+    }
+    .takeQuizz-util{
+        margin: 7px 0px 7px 0px;
+    }
+    .questionButton{
+        display:flex;
+        flex-direction:row;
+        justify-content:space-between;
+
+    }
+    .questionButton a{
+        border:1px solid black;
+        margin-bottom:5px;
+        padding: 5px;
+            background-color: #fd647a;
+    }
+    .quizQuestion{
+        width:85%;
+        display:flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .questionNumber{
+        width:10%;
+    }
+    #quiz-form{
+        margin:0;
+        padding:0;
+        height:100%;
+    }
+    .submitButton{
+        font-weight: 500;
+        width: 100%;
+
+    }
+    .active{
+        background-color: lightgreen;
     }
 </style>
-<div>
-<div class="preExam">
+<div class="container">
+    <div class="preExam">
         <button id="start" onclick="startQuiz()">START QUIZ</button>
-</div>
-<div class="inExam">
-    <div>
-        <p>
-            @ViewBag.Quizid
-        </p>
-        <p>
-            @ViewBag.QuizTitle
-        </p>
     </div>
-    <div>
-        <section class="takeQuizz-util">
-            <span id="timer">00:30</span>
-        </section>
-    </div>
-    <div>
-        <form id="quiz-form" action="../submit/@ViewBag.QuizId"  method="post">
-            <input type="text" value="@Context.Session.GetString("username")" name = "username" />
-            @foreach (var question in questions)
-            {
-                <p>
-                    Question @index: @question.QuestionText
-                </p>
-                
-                @foreach(var answer in answers)
-                {
-                    if (answer.QuestionId == question.QuestionId)
-                    {
-                        <input type="radio" id="answer+@index" name="answers[@index]" value="@answer.AnswerId" checked>
-                        <label for="@index">@answer.AnswerText</label><br />
-                        <p>@answer.AnswerId</p>
-                    }
-                }
-                index++;
-                <br />
-            }
-            <input type="submit" value="submit"/>
-        </form>
+    <div class="inExam">
+        <div class="examTitle">
+            <h1>
+                @ViewBag.QuizTitle
+            </h1>
 
+        </div>
+        <div class="examBody">
+            <div class="left">
+                <form id="quiz-form" action="../submit/@ViewBag.QuizId" method="post">
+                    <input type="text" value="@Context.Session.GetString("username")" name="username" hidden />
+                    <div class="quizContainer">
+                        @foreach (var question in questions)
+                        {
+                            int temp = index + 1;
+                            <div id="@index+go" class="quizChild">
+                                <div class="questionNumber">
+                                    <h3>
+                                        Question @temp:
+                                    </h3>
+                                </div>
+                                <div class="quizQuestion" >
+
+                                    <h3>
+                                        @question.QuestionText
+                                    </h3>
+
+                                    @foreach (var answer in answers)
+                                    {
+                                        if (answer.QuestionId == question.QuestionId)
+                                        {
+                                            <div class="answer">
+                                                <input type="radio" id="@index.@answer.AnswerId" name="answers[@index]" value="@answer.AnswerId" onchange="toggleOptionItemClass(this)">
+                                                <label for="@index.@answer.AnswerId">@answer.AnswerText</label>
+                                            </div>
+                                        }
+
+                                    }
+
+                                    <br />
+                                    <div class="questionButton">
+                                    @if (index != 0)
+                                    {
+                                        index--;
+                                        <a href="#@index+go">
+                                            previous question
+                                        </a>
+                                        index++;
+                                    }
+
+                                    @if (index != questions.Count - 1)
+                                    {
+                                        index++;
+                                        <a href="#@index+go">
+                                            next question
+                                        </a>
+                                    }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="right">
+                <p>Quiz Navigation</p>
+                <div class="examNavigation">
+
+                    @foreach (var question in questions)
+                    {
+                        int temp = i + 1;
+                        <div class="nav-item" id="@i">
+                            <a href="#@i+go" >@temp</a>
+                        </div>
+                        if (i % 5 == 4)
+                        {
+
+                        }
+                        i++;
+                    }
+                </div>
+                <section class="takeQuizz-util">
+                    <p>Time Left: <span id="timer">00:30</span></p>
+                </section>
+                <div>
+                    <button class="submitButton" onclick="submitQuiz()">SUBMIT</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 </div>
 <script>
     const button = document.getElementById("start")
     const timerElement = document.getElementById("timer");
     button.addEventListener("click", () => {
         startCountdown();
-        
+
         document.getElementsByClassName("preExam")[0].style.display = "none";
         document.getElementsByClassName("inExam")[0].style.display = "block";
     });
-    function startQuiz(){
+    function startQuiz() {
         startCountdown();
         document.getElementsByClassName("preExam").style.display = "none";
         document.getElementsByClassName("inExam").style.display = "block";
     }
     function startCountdown() {
-        let timeLeft = 1 * 30;
+        let timeLeft = 1 * 3000;
 
         const countdownInterval = setInterval(() => {
             const minutes = Math.floor(timeLeft / 60);
@@ -93,5 +293,20 @@
 
     function padZero(number) {
         return number.toString().padStart(2, "0");
+    }
+
+    function submitQuiz() {
+        document.getElementById("quiz-form").submit();
+    }
+    function toggleOptionItemClass(checkbox) {
+
+        var value = Math.floor(parseFloat(checkbox.id));
+        var taga = document.getElementById(value);
+        checkbox.id;
+        console.log(checkbox.id + "id ne");
+        if (checkbox.checked) {
+            taga.classList.add("active");
+        } else {
+        }
     }
 </script>
