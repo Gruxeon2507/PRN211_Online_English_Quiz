@@ -39,11 +39,11 @@ namespace Online_English_Quiz_Project.Controllers
         }
         static string score;
         [HttpPost]
-        public IActionResult Submit(List<string> answers, int quizId,string username)
+        public IActionResult Submit(List<string> answers, int quizId,string username,int total)
         {
 
             int correctAnswer = 0;
-            int totalQuestion = answers.Count;
+            int totalQuestion = total;
             int temp = 0; 
 
             using (PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())

@@ -7,6 +7,8 @@
     var answers = ViewBag.Answers as List<Answer>;
     int index = 0;
     int i = 0;
+    string username = Context.Session.GetString("username");
+    string displayName = Context.Session.GetString("displayName");
 }
 @using Online_English_Quiz_Project.Models;
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +25,7 @@
     }
 
     .container {
-        margin:50px;
+        margin:2rem 2rem;
     }
 
     .quizContainer {
@@ -45,10 +47,14 @@
     .questionNumber h3{
         white-space: nowrap;
     }
+    .questionNumber{
+        border-right: 2px solid rgba(0,0,0,0.2);
+    }
     .quizContainer:last-child {
     }
 
     .examBody {
+        font-size: 1.3rem;
         display: flex;
         width: 100%;
         flex-direction:row;
@@ -104,21 +110,24 @@
     }
 
     .examNavigation {
+        
         display: grid;
-        grid-template-columns: repeat(5,1fr );
+        grid-template-columns: repeat(6,1fr );
         gap: 10px;
         width: min-content;
-        margin-left:10px
+        margin:auto;
+
     }
     .answer{
         margin: 10px;
         
     }
     *{
-        font-size: 1.3rem;
+        
         
     }
     .examTitle{
+        font-size: 1.3rem;
     }
     #timer{
         font-weight:bold;
@@ -133,18 +142,21 @@
 
     }
     .questionButton a{
+        font-size: 1.3rem;
         border:1px solid black;
         margin-bottom:5px;
         padding: 5px;
-            background-color: #fd647a;
+        background-color: #fd647a;
     }
     .quizQuestion{
+        font-size: 1.3rem;
         width:85%;
         display:flex;
         flex-direction: column;
         justify-content: space-between;
     }
     .questionNumber{
+        font-size: 1.3rem;
         width:10%;
     }
     #quiz-form{
@@ -155,15 +167,70 @@
     .submitButton{
         font-weight: 500;
         width: 100%;
-
+        font-size: 1.3rem;
     }
     .active{
         background-color: lightgreen;
     }
+
+    .header {
+        display: flex;
+        justify-content: end;
+        font-size: 20px;
+    }
+    .header a{
+        text-decoration:none;
+        font-weight: 600;
+        color: #fd647a;
+    }
+    .dropDown {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .examInfo{
+        font-size: 1.3rem;
+    }
+    #start{
+        font-size: 1.3rem;
+        border: 1px solid black;
+        margin-bottom: 5px;
+        margin-top: 15px;
+        padding: 5px;
+        background-color: #fd647a;
+    }
 </style>
 <div class="container">
+    <div class="header">
+        @if (username != null)
+        {
+            <div class="dropDown">
+                <p>Hi, @displayName &nbsp</p>
+                <a href="/logout">Logout</a>
+            </div>
+        }
+        else
+        {
+            <div>
+
+                <a href="/login">Login</a>
+            </div>
+        }
+
+    </div>
     <div class="preExam">
-        <button id="start" onclick="startQuiz()">START QUIZ</button>
+        <div class="examTitle">
+            <h1>
+                @ViewBag.QuizTitle
+            </h1>
+
+        </div>
+        <div class="examInfo">
+            <p>Duration: 30 minutes</p>
+            <p>Number of Question: @questions.Count</p>
+            <p>Number of Attempt: 1</p>
+        </div>
+        <button id="start" class="questionButton" onclick="startQuiz()">START EXAM</button>
     </div>
     <div class="inExam">
         <div class="examTitle">
@@ -176,6 +243,7 @@
             <div class="left">
                 <form id="quiz-form" action="../submit/@ViewBag.QuizId" method="post">
                     <input type="text" value="@Context.Session.GetString("username")" name="username" hidden />
+                    <input type="text" value="@questions.Count" name="total" hidden />
                     <div class="quizContainer">
                         @foreach (var question in questions)
                         {
@@ -232,7 +300,7 @@
 
             </div>
             <div class="right">
-                <p>Quiz Navigation</p>
+                <p>Quiz Navigation:</p>
                 <div class="examNavigation">
 
                     @foreach (var question in questions)
@@ -249,7 +317,7 @@
                     }
                 </div>
                 <section class="takeQuizz-util">
-                    <p>Time Left: <span id="timer">00:30</span></p>
+                    <p>Time Left: <span id="timer">30:00</span></p>
                 </section>
                 <div>
                     <button class="submitButton" onclick="submitQuiz()">SUBMIT</button>
@@ -273,7 +341,7 @@
         document.getElementsByClassName("inExam").style.display = "block";
     }
     function startCountdown() {
-        let timeLeft = 1 * 3000;
+        let timeLeft = 1 * 1800;
 
         const countdownInterval = setInterval(() => {
             const minutes = Math.floor(timeLeft / 60);
