@@ -2,16 +2,109 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    string username = Context.Session.GetString("username");
+    string displayName = Context.Session.GetString("displayName");
+    string role = Context.Session.GetString("role");
+    Quiz quiz = ViewBag.quiz;
 }
 @using Online_English_Quiz_Project.Models
-<div>
-    <h1>result</h1>
-    <p>id: @ViewBag.id</p>
-    @foreach(UserQuiz uq in ViewBag.result)
-    {
-        <p>@uq.DateTaken</p>
-        <p>@uq.Username</p>
-        <p>@uq.Score</p>
-        <p>@ViewBag.quiz.QuizTitle</p>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lunasima:wght@400;700&family=Roboto+Condensed:wght@300;400;700&family=Roboto+Mono:ital,wght@0,300;0,400;0,500;1,200;1,400&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+    * {
+        /*border: 1px solid red;*/
+        font-family: 'Roboto', sans-serif;
     }
+
+    .title {
+        text-align: center;
+        font-size: 1.9rem !important;
+    }
+    td{
+        border:1px solid;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 20px;
+    }
+
+        .header a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #fd647a;
+            margin: 10px;
+        }
+
+    .dropDown {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .content{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:100%;
+    }
+
+</style>
+<div>
+    <div class="header">
+        @if (username != null)
+        {
+            <p>Hi, @displayName &nbsp</p>
+            <div class="dropDown">
+                <a href="/">Home</a>
+                @if (role.Equals("admin"))
+                {
+                    <a href="/statistic">Statistic</a>
+                }
+                <a href="/logout">Logout</a>
+            </div>
+        }
+        else
+        {
+            <div>
+
+                <a href="/login">Login</a>
+            </div>
+        }
+
+    </div>
+    <div class="preExam">
+        <div class="examTitle">
+            <h1>
+                @quiz.QuizTitle
+            </h1>
+
+        </div>
+    </div>
+    <h2>Result</h2> 
+    <div class="content">
+        <table>
+            <tr>
+                <td>Exam Id</td>
+                <td>Exam Name</td>
+                <td>Username</td>
+                <td>Display Name</td>
+                <td>Score</td>
+            </tr>
+            @foreach (UserQuiz uq in ViewBag.result)
+            {
+                <tr>
+
+                    <td>@ViewBag.id</td>
+                    <td>@ViewBag.quiz.QuizTitle</td>
+                    <td>@uq.Username</td>
+                    <td>@displayName</td>
+                    <td>@uq.Score</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    
 </div>

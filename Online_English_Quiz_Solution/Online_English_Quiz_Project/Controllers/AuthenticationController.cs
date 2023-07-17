@@ -27,7 +27,15 @@ namespace Online_English_Quiz_Project.Controllers
                     {
                         HttpContext.Session.SetString("username", user.Username);
                         HttpContext.Session.SetString("displayName", user.DisplayName);
+                        if (user.Username.Equals("admin"))
+                        {
+                            HttpContext.Session.SetString("role", "admin");
 
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetString("role", "user");
+                        }
                         return RedirectToAction("Home","Display");
                     }
                     else

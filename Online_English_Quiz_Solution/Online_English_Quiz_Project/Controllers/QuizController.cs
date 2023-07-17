@@ -10,7 +10,7 @@ namespace Online_English_Quiz_Project.Controllers
         {
             if (HttpContext.Session.GetString("username") == null)
             {
-                //return RedirectToAction("Login", "Authentication");
+                return RedirectToAction("Login", "Authentication");
             }
             
             using (PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())

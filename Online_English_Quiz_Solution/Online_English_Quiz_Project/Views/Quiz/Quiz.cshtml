@@ -9,6 +9,7 @@
     int i = 0;
     string username = Context.Session.GetString("username");
     string displayName = Context.Session.GetString("displayName");
+    string role = Context.Session.GetString("role");
 }
 @using Online_English_Quiz_Project.Models;
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -175,18 +176,23 @@
 
     .header {
         display: flex;
-        justify-content: end;
+        justify-content: space-between;
         font-size: 20px;
     }
     .header a{
         text-decoration:none;
         font-weight: 600;
         color: #fd647a;
+            margin: 10px;
     }
     .dropDown {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .singleQuiz:hover {
+        background-color: rgba(3, 102, 214, 0.3);
     }
     .examInfo{
         font-size: 1.3rem;
@@ -204,8 +210,13 @@
     <div class="header">
         @if (username != null)
         {
+            <p>Hi, @displayName &nbsp</p>
             <div class="dropDown">
-                <p>Hi, @displayName &nbsp</p>
+                <a href="/">Home</a>
+                @if (role.Equals("admin"))
+                {
+                    <a href="/statistic">Statistic</a>
+                }
                 <a href="/logout">Logout</a>
             </div>
         }
