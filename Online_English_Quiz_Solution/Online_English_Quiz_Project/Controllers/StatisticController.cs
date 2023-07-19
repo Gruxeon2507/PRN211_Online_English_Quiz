@@ -5,20 +5,30 @@ namespace Online_English_Quiz_Project.Controllers
 {
     public class StatisticController : Controller
     {
-        public IActionResult Statistic(int quizId)
+        public IActionResult Statistic(int quizId,int from,int to)
         {
             using(PRN211_Online_English_QuizContext context = new PRN211_Online_English_QuizContext())
             {
                 List<int> score = new List<int>(5);
                 score.AddRange(Enumerable.Repeat(0, 5));
-                var result = context.UserQuizzes.ToList();
+                var result = context.UserQuizzes.OrderByDescending(q=>q.DateTaken).ToList();
                 var quiz = context.Quizzes.ToList();
+                //if (to > 0 && quizId != 0)
+                //{
+                //    result = context.UserQuizzes.Where(q => q.Score >= from && q.Score <= to && q.QuizId==quizId).OrderByDescending(q => q.DateTaken).ToList();
+                //} else
                 if (quizId != 0)
                 {
-                    result = context.UserQuizzes.Where(q => q.QuizId==quizId).ToList();
+                    result = context.UserQuizzes.Where(q => q.QuizId==quizId).OrderByDescending(q => q.DateTaken).ToList();
                 }
-                foreach(var item in result)
+                if (to > 0)
                 {
+                    result = context.UserQuizzes.Where(q => q.Score >= from && q.Score <= to).OrderByDescending(q => q.DateTaken).ToList();
+                }
+                foreach (var item in result)
+                {
+                    item.Score = Math.Round((double)item.Score, 2);
+                    item.DateTaken = item.DateTaken.Date;
                     item.Quiz= context.Quizzes.FirstOrDefault(q => q.QuizId==item.QuizId);
                     if (item.Score <= 2)
                     {

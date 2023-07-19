@@ -9,6 +9,9 @@
 }
 @using Online_English_Quiz_Project.Models
 @using Online_English_Quiz_Project.Models
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lunasima:wght@400;700&family=Roboto+Condensed:wght@300;400;700&family=Roboto+Mono:ital,wght@0,300;0,400;0,500;1,200;1,400&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -16,7 +19,9 @@
     * {
         /*border: 1px solid red;*/
         font-family: 'Roboto', sans-serif;
+        font-size:1.1rem;
     }
+
     .header {
         display: flex;
         justify-content: space-between;
@@ -35,29 +40,38 @@
         align-items: center;
         justify-content: center;
     }
-    .container{
-        width:100%;
-        display:flex;
+
+    .container {
+        width: 100%;
+        display: flex;
     }
-    .left{
-        width:75%;
-        display:flex;
+
+    .left {
+        width: 75%;
+        display: flex;
     }
-    .right{
-        width:25%;
+
+    .right {
+        width: 25%;
     }
-    .score{
-        width:30%;
+
+    .score {
+        width: 25%;
     }
-    .history{
-        width:70%;
+
+    .history {
+        width: 70%;
+        margin-left:30px;
+        border-left:1px solid;
+        border-right:1px solid;
+        padding-left:30px
     }
 
     .examName {
         cursor: pointer;
         box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
         text-align: center;
-        margin:10px;
+        margin: 10px;
         border-radius: 5px;
         display: flex;
         align-items: center;
@@ -65,10 +79,48 @@
     }
 
         .examName:hover {
+            background-color: rgba(3, 102, 214, 0.3);
+        }
+
+    td,th {
+        margin:0;
+        padding:0;
+    }
+    th{
         background-color: rgba(3, 102, 214, 0.3);
     }
-    td{
-        border:1px solid;
+    #pieChar {
+        width: 300px;
+    }
+
+    .scoreDistribution td{
+        width:50px;
+        text-align:center;
+    }
+
+    .column1 {
+        width: 100px;
+    }
+
+    .column2 {
+        width: 500px;
+    }
+
+    .column3 {
+        width: 50px;
+    }
+
+    .column4 {
+        width: 150px;
+    }
+    .pie{
+        width:320px;
+    }
+    tr{
+        width:100%;
+    }
+    .scoreDistribution{
+        width:100%;
     }
 </style>
 <div class="header">
@@ -91,59 +143,102 @@
             <a href="/login">Login</a>
         </div>
     }
+    
 
 </div>
 <div class="container">
     <div class="left">
-    <div class="score">
-    <h2>Score Distribution</h2>
-    <table>
-        <tr>
-            <td>8-10</td>
-            <td>@ViewBag.Score[4]</td>
-            <td><a href="#">Details</a></td>
-        </tr>
-        <tr>
-            <td>6-8</td>
-            <td>@ViewBag.Score[3]</td>
-            <td><a href="#">Details</a></td>
-        </tr>
-        <tr>
-            <td>4-6</td>
-            <td>@ViewBag.Score[2]</td>
-                <td><a href="#">Details</a></td>
-        </tr>
-        <tr>
-            <td>2-4</td>
-            <td>@ViewBag.Score[1]</td>
-                <td><a href="#">Details</a></td>
-        </tr>
-        <tr>
-            <td>0-2</td>
-            <td>@ViewBag.Score[0]</td>
-            <td><a href="#">Details</a></td>
-        </tr>
-    </table>
-    </div>
-    <div class="history"> 
-    <h2>User Exam History</h2>
-    <table>
-        <tr>
-            <td>user</td>
-            <td>quiz</td>
-            <td>score</td>
-            <td>date</td>
-        </tr>
-        @foreach (UserQuiz q in ViewBag.data)
-        {
-            <tr>
-                <td>@q.Username</td>
-                <td>@q.Quiz.QuizTitle</td>
-                <td>@q.Score</td>
-                <td>@q.DateTaken</td>
-            </tr>
-        }
-    </table>
+        <div class="score">
+            <h2>Score Distribution</h2>
+            <table class="scoreDistribution">
+                <tr>
+                    <td>8-10</td>
+                    <td>@ViewBag.Score[4]</td>
+                    <td>
+                        <form>
+                            <input type="text" name="from" value="8" hidden />
+                            <input type="text" name="to" value="10" hidden />
+                            <button type="submit" value="detail">detail</button>
+                        </form>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>6-8</td>
+                    <td>@ViewBag.Score[3]</td>
+                    <td>
+                        <form>
+                            <input type="text" name="from" value="6" hidden />
+                            <input type="text" name="to" value="8" hidden />
+                            <button type="submit" value="detail">detail</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4-6</td>
+                    <td>@ViewBag.Score[2]</td>
+                    <td>
+                        <form>
+                            <input type="text" name="from" value="4" hidden />
+                            <input type="text" name="to" value="6" hidden />
+                            <button type="submit" value="detail">detail</button>
+                        </form>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>2-4</td>
+                    <td>@ViewBag.Score[1]</td>
+                    <td>
+                        <form>
+                            <input type="text" name="from" value="2" hidden />
+                            <input type="text" name="to" value="4" hidden />
+                            <button type="submit" value="detail">detail</button>
+                        </form>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>0-2</td>
+                    <td>@ViewBag.Score[0]</td>
+                    <td>
+                        <form>
+                            <input type="text" name="from" value="0" hidden />
+                            <input type="text" name="to" value="2" hidden />
+                            <button type="submit" value="detail">detail</button>
+                        </form>
+
+                    </td>
+                </tr>
+            </table>
+            <div class="pie">
+            <canvas id="pieChart" width="300" height="300"></canvas>
+
+            </div>
+        </div>
+        <div class="history">
+            <h2>User Exam History</h2>
+            <form asp-action="Statistic" asp-controller="Statistic" method="get">
+                <input name="quizId" value="0" hidden />
+                <input type="submit" value="RESET FILTER" />
+            </form>
+            <table>
+                <thead>
+                    <th class="column1">user</th>
+                    <th class="column2">quiz</th>
+                    <th class="column3">score</th>
+                    <th class="column4">date</th>
+                </thead>
+                @foreach (UserQuiz q in ViewBag.data)
+                {
+                    <tr>
+                        <td>@q.Username</td>
+                        <td>@q.Quiz.QuizTitle</td>
+                        <td>@q.Score</td>
+                        <td>@q.DateTaken.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </table>
         </div>
     </div>
     <div class="right">
@@ -153,10 +248,31 @@
                 <p>@q.QuizTitle</p>
             </div>
         }
-        <form asp-action="Statistic" asp-controller="Statistic" method="get">
-            <input name="quizId" value="0" hidden />
-            <input type="submit" value="RESET" />
-        </form>
+        
     </div>
 
 </div>
+<script>
+    // Data for the pie chart
+    var total = (@ViewBag.Score[0]+@ViewBag.Score[1]+@ViewBag.Score[2]+@ViewBag.Score[3]+@ViewBag.Score[4]);
+    var data = {
+        labels: ['0-2', '2-4', '4-6', '6-8', '8-10'],
+        datasets: [{
+            data: [@ViewBag.Score[0]/total*100,@ViewBag.Score[1]/total * 100, @ViewBag.Score[2]/total*100, @ViewBag.Score[3]/total * 100, @ViewBag.Score[4]/total*100],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8C1AC9', '#00BBD3']
+            }]
+    };
+
+    // Options for the pie chart
+    var options = {
+        responsive: true
+    };
+
+    // Create the pie chart
+    var ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options
+    });
+</script>

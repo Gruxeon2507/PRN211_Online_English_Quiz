@@ -22,6 +22,7 @@ namespace Online_English_Quiz_Project.Models
         public virtual DbSet<QuizQuestion> QuizQuestions { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserAnswer> UserAnswers { get; set; } = null!;
         public virtual DbSet<UserQuiz> UserQuizzes { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -134,7 +135,7 @@ namespace Online_English_Quiz_Project.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Username)
-                    .HasName("PK__User__F3DBC5734EF91284");
+                    .HasName("PK__User__F3DBC573F07D2CD4");
 
                 entity.ToTable("User");
 
@@ -169,7 +170,7 @@ namespace Online_English_Quiz_Project.Models
                         r => r.HasOne<User>().WithMany().HasForeignKey("Username").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserRole__userna__286302EC"),
                         j =>
                         {
-                            j.HasKey("Username", "RoleId").HasName("PK__UserRole__4F0241116764A679");
+                            j.HasKey("Username", "RoleId").HasName("PK__UserRole__4F02411163CBB1D5");
 
                             j.ToTable("UserRole");
 
@@ -179,12 +180,54 @@ namespace Online_English_Quiz_Project.Models
                         });
             });
 
+            modelBuilder.Entity<UserAnswer>(entity =>
+            {
+                entity.HasKey(e => new { e.QuizId, e.QuestionId, e.Username })
+                    .HasName("PK__UserAnsw__8B251AB3BCAAD438");
+
+                entity.ToTable("UserAnswer");
+
+                entity.Property(e => e.QuizId).HasColumnName("quizId");
+
+                entity.Property(e => e.QuestionId).HasColumnName("questionId");
+
+                entity.Property(e => e.Username)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("username");
+
+                entity.Property(e => e.AnswerId).HasColumnName("answerId");
+
+                entity.HasOne(d => d.Answer)
+                    .WithMany(p => p.UserAnswers)
+                    .HasForeignKey(d => d.AnswerId)
+                    .HasConstraintName("FK__UserAnswe__answe__3C69FB99");
+
+                entity.HasOne(d => d.Question)
+                    .WithMany(p => p.UserAnswers)
+                    .HasForeignKey(d => d.QuestionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserAnswe__quest__3B75D760");
+
+                entity.HasOne(d => d.Quiz)
+                    .WithMany(p => p.UserAnswers)
+                    .HasForeignKey(d => d.QuizId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserAnswe__quizI__3A81B327");
+
+                entity.HasOne(d => d.UsernameNavigation)
+                    .WithMany(p => p.UserAnswers)
+                    .HasForeignKey(d => d.Username)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserAnswe__usern__3D5E1FD2");
+            });
+
             modelBuilder.Entity<UserQuiz>(entity =>
             {
                 entity.ToTable("UserQuiz");
 
                 entity.Property(e => e.DateTaken)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("dateTaken");
 
                 entity.Property(e => e.QuizId).HasColumnName("quizId");

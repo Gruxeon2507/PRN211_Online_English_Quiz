@@ -95,7 +95,7 @@
     <div class="Quizzes">
         @foreach (Quiz q in ViewBag.Quizzes)
         {
-            <div class="singleQuiz" onclick="window.location.href='/quiz/@q.QuizId'">
+            <div class="singleQuiz" onclick="window.location.href='/quiz/@q.QuizId?username=@username'">
                 <p>@q.QuizTitle</p>
             </div>
         }

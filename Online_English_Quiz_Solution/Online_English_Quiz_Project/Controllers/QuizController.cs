@@ -28,7 +28,16 @@ namespace Online_English_Quiz_Project.Controllers
                     
                     List<QuizQuestion> questionList = context.QuizQuestions.Where(q => q.QuizId==quizId).ToList();
                     List<Question> questions = context.Questions.Where(q => questionList.Select(q1 => q1.QuestionId).Contains(q.QuestionId)).ToList();
-                    ViewBag.Questions = questions;
+                    List<Question> ran =new List<Question>();
+                    Random random = new Random();
+                    while (questions.Count > 0)
+                    {
+                        int index = random.Next(questions.Count);
+                        ran.Add(questions[index]);
+                        questions.RemoveAt(index);
+                    }
+                    ViewBag.Questions = ran;
+                    
                     List<Answer> answers = context.Answers.Where(a => questionList.Select(q => q.QuestionId).Contains(a.QuestionId)).ToList();
                     ViewBag.Answers = answers;
                     return View();
@@ -60,6 +69,12 @@ namespace Online_English_Quiz_Project.Controllers
                         {
                             correctAnswer++;
                         }
+                        UserAnswer ua = new UserAnswer();
+                        ua.AnswerId = answer.AnswerId;
+                        ua.QuestionId = answer.QuestionId;
+                        ua.QuizId = quizId;
+                        ua.Username = username;
+                        context.UserAnswers.Add(ua);
                     }
                 }
                 Console.WriteLine(correctAnswer);
@@ -70,13 +85,14 @@ namespace Online_English_Quiz_Project.Controllers
                 quiz.Username =username;
                 quiz.Score = finalScore;
                 quiz.QuizId = quizId;
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 context.UserQuizzes.Add(quiz);
                 context.SaveChanges();
                 Console.WriteLine(correctAnswer / totalQuestion);
                 Console.WriteLine("chay vao day");
             }
 
-            return RedirectToAction("Result", "Display", new { quizId = quizId });
+            return RedirectToAction("Result", "Display", new { quizId = quizId,username=username });
         }
         [HttpGet]
         public IActionResult Submit()

@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS PRN211_Online_English_Quiz;
+DROP DATABASE PRN211_Online_English_Quiz;
 CREATE DATABASE PRN211_Online_English_Quiz;
 
 USE PRN211_Online_English_Quiz;
@@ -35,8 +35,9 @@ CREATE TABLE UserQuiz(
 	username VARCHAR(255) REFERENCES [User](username),
 	quizId INT REFERENCES [Quiz](quizId),
 	score FLOAT,
-	dateTaken DATE
+	dateTaken datetime
 )
+
 
 CREATE TABLE Question (
 	questionId INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
@@ -54,3 +55,12 @@ CREATE TABLE Answer(
 	answerText VARCHAR(255),
 	isCorrectAnswer BIT
 )
+
+CREATE TABLE UserAnswer(
+	quizId INT REFERENCES Quiz(quizId),
+	questionId INT REFERENCES Question(questionId),
+	answerId INT REFERENCES Answer(AnswerId),
+	username VARCHAR(255) REFERENCES [User](username),
+	PRIMARY KEY(quizId,questionId,username)
+)
+SELECT * FROM UserAnswer

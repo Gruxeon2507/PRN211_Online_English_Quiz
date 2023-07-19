@@ -21,8 +21,9 @@
         text-align: center;
         font-size: 1.9rem !important;
     }
-    td{
-        border:1px solid;
+
+    td {
+        border: 1px solid;
     }
 
     .header {
@@ -43,11 +44,12 @@
         align-items: center;
         justify-content: center;
     }
-    .content{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        width:100%;
+
+    .content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
     }
 
 </style>
@@ -82,7 +84,7 @@
 
         </div>
     </div>
-    <h2>Result</h2> 
+    <h2>Result</h2>
     <div class="content">
         <table>
             <tr>
@@ -105,6 +107,46 @@
             }
 
         </table>
+        <table>
+            <tr>
+                <td>Exam Id</td>
+                <td>Exam Name</td>
+                <td>Question</td>
+                <td>User Option</td>
+                <td>Correct Option</td>
+            </tr>
+            @foreach (QuizQuestion q in ViewBag.quizQuestion)
+            {
+
+                <tr>
+                    <td>@q.Quiz.QuizId</td>
+                    <td>@q.Quiz.QuizTitle</td>
+                    <td>@q.Question.QuestionText</td>
+                    <td>
+                        @foreach (UserAnswer ua in ViewBag.answer)
+                        {
+                            if (ua.QuestionId == q.Question.QuestionId)
+                            {
+                                <span>@ua.Answer.AnswerText</span>
+                               
+                            }
+                            else
+                            {
+                                <span></span>
+                            }
+                        }
+                    </td>
+                        @foreach (Answer a in ViewBag.answer2)
+                        {
+                            if (a.IsCorrectAnswer && a.QuestionId == q.Question.QuestionId)
+                            {
+                            <td>@a.AnswerText</td>
+                            }
+                        }
+                </tr>
+
+            }
+        </table>
     </div>
-    
+
 </div>

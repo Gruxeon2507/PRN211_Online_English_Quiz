@@ -7,6 +7,7 @@ namespace Online_English_Quiz_Project.Models
     {
         public Quiz()
         {
+            UserAnswers = new HashSet<UserAnswer>();
             UserQuizzes = new HashSet<UserQuiz>();
         }
 
@@ -17,6 +18,7 @@ namespace Online_English_Quiz_Project.Models
         public int? Duration { get; set; }
 
         public virtual User? CreatedByNavigation { get; set; }
+        public virtual ICollection<UserAnswer> UserAnswers { get; set; }
         public virtual ICollection<UserQuiz> UserQuizzes { get; set; }
     }
 }
